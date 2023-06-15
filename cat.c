@@ -2,24 +2,45 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#ifndef __cplusplus
+#include <stdbool.h>
+#endif
 
 void read_file(char *file_name);
 const char* flags_parser(char *flags, int argc, char **argv);
 void help_function();
 
 
+
 int main(int argc, char **argv) {
 
-//     char flags[7] = "\0";
-//     int index_end_flags = 1;
+    bool number = false;
+    bool number_nonblank = false;
 
-//     //for (int i = 1; i < argc; i++){ 
-//     const char* flags_parser(flags, argc, argv);
+    char flags[7] = "\0";
+    int index_end_flags = 1;
+    
+    //for (int i = 1; i < argc; i++){ 
+    const char* flags_parser(flags, argc, argv);
 
-//  // }
-//   printf("%s", flags_parser(flags, argc, argv));
-  help_function();
-  return 0;
+ // }
+  //printf("%s", flags_parser(flags, argc, argv));
+    char *given_flags = flags_parser(flags, argc, argv);
+    for (size_t i = 0; i < strlen(given_flags); i++)
+    {
+        char f = given_flags[i];
+
+        switch (f)
+        {
+        case 'b':
+            
+            break;
+        
+        default:
+            help_function();
+        }
+    }  
+return 0;
 }
 
 void read_file(char *file_name){
