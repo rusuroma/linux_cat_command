@@ -18,7 +18,8 @@ int main(int argc, char **argv) {
 
     bool number = false;
     bool number_nonblank = false;
-
+    bool show_ends = false;
+    bool help_fct = false;
     char flags[7] = "\0";
     int index_end_flags = 1;
     int n = 0;
@@ -38,8 +39,15 @@ int main(int argc, char **argv) {
         case 'b':
             number_nonblank = true;
             break;
+        case 'E':
+            show_ends = true;
+            break;    
         default:
+            number = false;
+            number_nonblank = false;
+            show_ends = false;
             help_function();
+            help_fct = true;
         }
     } 
     if(number && number_nonblank){
@@ -54,7 +62,7 @@ int main(int argc, char **argv) {
         for(int i = n; i<argc; i++ ){
             read_file(argv[i], number, number_nonblank);
         }//end for
-    }else{
+    }else if(!help_fct){
         for(int i = n; i<argc; i++ ){
             read_file(argv[i], number, number_nonblank);
         }//end for
@@ -94,29 +102,20 @@ void read_file(char *file_name, bool number, bool number_nonblank){
 }
 
 void all_lines_counter(FILE *fptr, char c){
+    char myString[1024] = "";
+    memset(myString, '\0', sizeof(myString));
     int count = 1;
-    c = fgetc(fptr);
-    printf("    ");
-    printf("%d", count);
-    printf("	");
-    while (c != EOF)
-    {   
-        if(c == '\n'){
-            printf("%c", c);
-            printf("    ");
-            printf("%d", ++count);
-            printf("  ");
-            c = fgetc(fptr);
-            //count++;
-        }else{
-            printf("%c", c);
-            c = fgetc(fptr);
-        }
-        
+
+    while(fgets(myString, 1024, fptr)) {
+      printf("    ");
+      printf("%d", count);
+      printf("	");
+      printf("%s", myString);
+      count++;
     }
     printf("\n");
     fclose(fptr);
-
+    
 }
 
 void non_blank_lines_counter(FILE *fptr, char c){
@@ -124,21 +123,34 @@ void non_blank_lines_counter(FILE *fptr, char c){
     memset(myString, '\0', sizeof(myString));
     int i = 0;
     int l = 0;
-    while (c != EOF)
-    {
-        //if( fgets (myString, 1024, fptr)!=NULL ) {
-      /* writing content to stdout */
-        //puts(myString);
-        c = fgetc(fptr);
-        if(c == '\n'){
-             fgets (myString, 1024, fptr);
-        }
+    int count = 1;
+  //   while (c != EOF)
+  //   {
+  //       //if( fgets (myString, 1024, fptr)!=NULL ) {
+  //     /* writing content to stdout */
+  //       //puts(myString);
+  //       c = fgetc(fptr);
+  //       fgets (myString, 1024, fptr);
+  //       printf("%s", myString);
        
         
-   }
-    myString[i] = '\0';
+  //  }
+    //myString[i] = '\0';
     //puts(myString);
-    printf("%s", myString);
+    //printf("%s", myString);
+    while(fgets(myString, 1024, fptr)) {
+      if(strlen(myString)>1){
+        printf("    ");
+        printf("%d", count);
+        printf("	");
+        printf("%s", myString);
+        count++;
+      }else{
+        printf("%s", myString);
+      }
+}
+
+
     fclose(fptr);
 
 }
